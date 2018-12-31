@@ -216,9 +216,15 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
     height: 280px;
     border-bottom: 5px solid $platinum;
     overflow: hidden;
+
+    // prevent column contents from breaking across columns
+    -webkit-column-break-inside: avoid;
+    break-inside: avoid;
+    page-break-inside: avoid;
 
     @include media-min(400px) {
       height: 190px;
