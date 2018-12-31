@@ -1,0 +1,136 @@
+.slide-carousel {
+  overflow: hidden;
+}
+
+.slide-inner-wrapper {
+  box-sizing:border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.slide-image {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 320px;
+  height: 320px;
+  margin-bottom: 15px;
+  padding: 5px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  overflow: hidden;
+
+  @include media-min(340px) {
+    width: 340px;
+    height: 340px;
+  }
+
+  @include media-min(400px) {
+    width: 400px;
+    height: 400px;
+  }
+
+  @include media-min(650px) {
+    width: 650px;
+    height: 500px;
+  }
+  
+  img {
+    max-width: 390px;
+    max-height: 390px;
+    width: auto;
+    height: auto;
+  
+    @include media-min(650px) {
+      max-width: 640px;
+      max-height: 490px;
+    }
+  }
+}
+
+.slide-text {
+  width: 100%;
+  max-width: 1000px;
+  font-size: 16px;
+  line-height: 24px;
+
+  @include media-max(1000px) {
+    p {
+      padding: 0 10px;
+    }
+  }
+}
+
+.slick-prev,
+.slick-next { 
+  z-index: 10;
+  top: 33%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+
+  @include media-min(650px) {
+    top: 40%;
+    width: 65px;
+    height: 65px;
+  }
+
+  @include media-max(800px) {
+    background-color: rgba(0, 0, 0, 0.05);
+
+    &:hover,
+    &:focus {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+  
+  &::before { 
+    @extend %fa-icon;
+    @extend .fas;   
+    
+    font-size: 40px;
+    color: $davys-gray;
+    opacity: 1;
+
+    @include media-min(650px) {
+      font-size: 65px;
+    }
+  }
+  
+  &.slick-disabled {
+    &::before {
+      opacity: 0.1;
+    }
+  }
+}
+
+.slick-next {
+  right: 0;
+
+  @include media-min(960px) {
+    right: 8%;
+  }
+  
+  &::before {
+    content: fa-content($fa-var-angle-right);
+  }
+}
+
+.slick-prev {
+  left: 0;
+
+  @include media-min(960px) {
+    left: 8%;
+  }
+  
+  &::before {
+    content: fa-content($fa-var-angle-left);
+  }
+}
