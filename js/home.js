@@ -14,8 +14,6 @@ $(document).ready(function() {
       url: "https://us-central1-sanguine-link-226918.cloudfunctions.net/recent-instagram-posts",
       success: function(response) {
         var posts = response["posts"].slice(0, 12);
-
-        imageGrid.show();
         
         $.each(posts, function(_index, post) {     
           var imageHtml = "<img src='" + post["image"] + "'></img>"
@@ -24,6 +22,8 @@ $(document).ready(function() {
         });
       },
       error: function(response) {
+        imageGrid.hide();
+
         var iframe = "<iframe width='560' height='315' src='https://www.youtube.com/embed/0IagRZBvLtw' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>";
         imageSection.children(".section-content-wrapper").append($(iframe));
       }

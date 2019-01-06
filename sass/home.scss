@@ -196,20 +196,33 @@ body {
 .instagram-grid {
   @include column-layout(1);
 
-  display: none;
+  box-sizing: border-box;
+  min-width: 290px;
+  min-height: 590px;
   padding: 5px 5px 0;
   background-color: $platinum;
 
   @include media-min(400px) {
     @include column-layout(2);
+
+    min-width: 395px;
+  }
+
+  @include media-min(560px) {
+    min-width: 495px;
+    min-height: 739px;
   }
 
   @include media-min(750px) {
     @include column-layout(3);
+
+    min-width: 740px;
   }
 
   @include media-min(1000px) {
     @include column-layout(4);
+
+    min-width: 985px;
   }
 
   .image-container {
