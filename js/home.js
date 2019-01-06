@@ -17,8 +17,12 @@ $(document).ready(function() {
         
         $.each(posts, function(_index, post) {     
           var imageHtml = "<img src='" + post["image"] + "'></img>"
-          var imageLink = "<div class='image-container'><a href='" + post["url"] + "'>" + imageHtml + "</a></div>";
-          imageGrid.append($(imageLink));
+          var imageLink = $("<div class='image-container'><a href='" + post["url"] + "'>" + imageHtml + "</a></div>");
+         
+          imageGrid.append(imageLink);
+
+          // fade in images in a random order
+          setTimeout(function() { imageLink.animate({ opacity: 1 }, 1000); }, Math.floor(Math.random() * 1501) + 150);
         });
       },
       error: function(response) {

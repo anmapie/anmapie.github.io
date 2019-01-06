@@ -233,6 +233,7 @@ body {
     height: 280px;
     border-bottom: 5px solid $platinum;
     overflow: hidden;
+    opacity: 0;
 
     // prevent column contents from breaking across columns
     -webkit-column-break-inside: avoid;
