@@ -5,9 +5,7 @@ $(document).ready(function() {
   var imageGrid = $(".instagram-grid");
   
   var fadeInImages = function() {
-    if (imagesLoaded) {
-      imageGrid.children(".loading").remove();
-      
+    if (imagesLoaded) {    
       // fade in images in a random order
       $(".image-container").each(function(_index, containerEl) {
         setTimeout(function() { $(containerEl).animate({ opacity: 1 }, 1000); }, Math.floor(Math.random() * 1501) + 150);
@@ -30,6 +28,7 @@ $(document).ready(function() {
         var imageLink = $("<div class='image-container'><a href='" + post["url"] + "'>" + imageHtml + "</a></div>");
        
         imageGrid.append(imageLink);
+        imageGrid.children(".loading").remove();
         imagesLoaded = true;
       });
     },
