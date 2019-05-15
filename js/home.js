@@ -28,9 +28,10 @@ $(document).ready(function() {
         var imageLink = $("<div class='image-container'><a href='" + post["url"] + "'>" + imageHtml + "</a></div>");
        
         imageGrid.append(imageLink);
-        imageGrid.children(".loading").remove();
-        imagesLoaded = true;
       });
+
+      imageGrid.children(".loading").remove();
+      imagesLoaded = true;
     },
     error: function(response) {
       imageGrid.hide();
@@ -47,7 +48,7 @@ $(document).ready(function() {
 
   // otherwise, fade in images when instagram section is scrolled into view
   $(window).scroll(function() {
-    var scrollTriggerHeight = imageSection.offset().top + imageSection.outerHeight() - $(window).height() - 400;
+    var scrollTriggerHeight = imageSection.offset().top + imageSection.outerHeight() - $(window).height() - 600;
   
     if ($(this).scrollTop() > scrollTriggerHeight) {
       fadeInImages();
