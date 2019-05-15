@@ -4,49 +4,54 @@ $(document).ready(function() {
   var imageSection = $("#play");
   var imageGrid = $(".instagram-grid");
   
-  // only load instagram images if section is in view
-  var loadImages = function() {
-    imagesLoaded = true;
-
-    $.ajax({
-      type: "GET",
-      dataType: "json",
-      url: "https://us-central1-sanguine-link-226918.cloudfunctions.net/recent-instagram-posts",
-      success: function(response) {
-        var posts = response["posts"].slice(0, 12);
-        
-        $.each(posts, function(_index, post) {     
-          var imageHtml = "<img src='" + post["image"] + "'></img>"
-          var imageLink = $("<div class='image-container'><a href='" + post["url"] + "'>" + imageHtml + "</a></div>");
-         
-          imageGrid.append(imageLink);
-
-          // fade in images in a random order
-          setTimeout(function() { imageLink.animate({ opacity: 1 }, 1000); }, Math.floor(Math.random() * 1501) + 150);
-        });
-      },
-      error: function(response) {
-        imageGrid.hide();
-
-        var iframe = "<iframe width='560' height='315' src='https://www.youtube.com/embed/0IagRZBvLtw' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>";
-        imageSection.children(".section-content-wrapper").append($(iframe));
-      }
-    });
+  var fadeInImages = function() {
+    if (imagesLoaded) {
+      imageGrid.children(".loading").remove();
+      
+      // fade in images in a random order
+      $(".image-container").each(function(_index, containerEl) {
+        setTimeout(function() { $(containerEl).animate({ opacity: 1 }, 1000); }, Math.floor(Math.random() * 1501) + 150);
+      });
+    } else {
+      setTimeout(fadeInImages, 200);
+    }
   }
 
-  // check if the instagram section is already visible on load
+  // start loading instagram images as soon as page loads
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: "https://us-central1-sanguine-link-226918.cloudfunctions.net/recent-instagram-posts",
+    success: function(response) {
+      var posts = response["posts"].slice(0, 12);
+      
+      $.each(posts, function(_index, post) {     
+        var imageHtml = "<img src='" + post["image"] + "'></img>"
+        var imageLink = $("<div class='image-container'><a href='" + post["url"] + "'>" + imageHtml + "</a></div>");
+       
+        imageGrid.append(imageLink);
+        imagesLoaded = true;
+      });
+    },
+    error: function(response) {
+      imageGrid.hide();
+
+      var iframe = "<iframe width='560' height='315' src='https://www.youtube.com/embed/0IagRZBvLtw' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>";
+      imageSection.children(".section-content-wrapper").append($(iframe));
+    }
+  });
+
+  // check if the instagram section is already visible on load + fade in images
   if (imageSection.offset().top <= $(window).height()) {
-    loadImages();
+    fadeInImages();
   }
 
-  // otherwise, load images when instagram section is scrolled into view
+  // otherwise, fade in images when instagram section is scrolled into view
   $(window).scroll(function() {
-    if (imagesLoaded) { return; }
-
     var scrollTriggerHeight = imageSection.offset().top + imageSection.outerHeight() - $(window).height() - 400;
   
     if ($(this).scrollTop() > scrollTriggerHeight) {
-      loadImages();
+      fadeInImages();
     }
   });
 

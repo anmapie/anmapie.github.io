@@ -197,6 +197,7 @@ body {
   @include column-layout(1);
 
   box-sizing: border-box;
+  position: relative;
   min-width: 290px;
   min-height: 590px;
   padding: 5px 5px 0;
@@ -223,6 +224,13 @@ body {
     @include column-layout(4);
 
     min-width: 985px;
+  }
+
+  .loading {
+    position: absolute;
+    top: 45%;
+    left: 45%;
+    color: $wild-blue-yonder;
   }
 
   .image-container {
