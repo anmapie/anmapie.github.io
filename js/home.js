@@ -19,7 +19,7 @@ $(document).ready(function() {
   $.ajax({
     type: "GET",
     dataType: "json",
-    url: "https://us-central1-sanguine-link-226918.cloudfunctions.net/recent-instagram-posts",
+    url: "https://us-west2-sanguine-link-226918.cloudfunctions.net/recent-instagram-posts-v2?getPosts=true",
     success: function(response) {
       var posts = response["posts"].slice(0, 12);
       
@@ -33,7 +33,7 @@ $(document).ready(function() {
       imageGrid.children(".loading").remove();
       imagesLoaded = true;
     },
-    error: function(response) {
+    error: function(_response) {
       imageGrid.hide();
 
       var iframe = "<iframe width='560' height='315' src='https://www.youtube.com/embed/0IagRZBvLtw' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>";
