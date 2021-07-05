@@ -1,6 +1,5 @@
 @import "partials/mixins";
 @import "partials/colors";
-@import "partials/slide_carousel";
 
 body {
   margin: 0;
@@ -255,100 +254,6 @@ body {
   }
 }
 
-.instagram-grid {
-  @include column-layout(1);
-
-  box-sizing: border-box;
-  position: relative;
-  min-width: 290px;
-  min-height: 590px;
-  padding: 5px 5px 0;
-  background-color: $platinum;
-
-  @include media-min(400px) {
-    @include column-layout(2);
-
-    min-width: 395px;
-  }
-
-  @include media-min(560px) {
-    min-width: 495px;
-    min-height: 739px;
-  }
-
-  @include media-min(750px) {
-    @include column-layout(3);
-
-    min-width: 740px;
-  }
-
-  @include media-min(1000px) {
-    @include column-layout(4);
-
-    min-width: 985px;
-  }
-
-  .loading {
-    position: absolute;
-    top: 45%;
-    left: 45%;
-    color: $wild-blue-yonder;
-  }
-
-  .image-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    height: 280px;
-    border-bottom: 5px solid $platinum;
-    overflow: hidden;
-    opacity: 0;
-
-    // prevent column contents from breaking across columns
-    -webkit-column-break-inside: avoid;
-    break-inside: avoid;
-    page-break-inside: avoid;
-
-    @include media-min(400px) {
-      height: 190px;
-    }
-
-    @include media-min(560px) {
-      height: 240px;
-    }
-
-    @include media-max(750px) {
-      &:nth-child(n+7) {
-        display: none;
-      }
-    }
-  
-    @include media-max(1000px) {
-      &:nth-child(n+10) {
-        display: none;
-      }
-    }
-
-    a {
-      line-height: 0;
-    }
-
-    img {
-      max-width: 280px;
-      height: auto;
-
-      @include media-min(400px) {
-        max-width: 190px;
-      }
-  
-      @include media-min(560px) {
-        max-width: 240px;
-      }
-    }
-  }
-}
-
 .footer {
   display: flex;
   justify-content: center;
@@ -375,3 +280,6 @@ body {
     font-size: 12px;
   }
 }
+
+@import "partials/slide_carousel";
+@import "partials/instagram_grid";
