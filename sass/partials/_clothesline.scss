@@ -1,0 +1,71 @@
+.clothesline {
+  position: relative;
+  width: 110%;
+  height: 150px;
+  margin: 0 -50px;
+  border-style: solid;
+  border-width: 5px;
+  border-color: transparent transparent $sage transparent;
+  border-radius: 0 0 80% 80%;
+}
+
+.polaroid {
+  position: absolute;
+  top: 145px;
+  display: flex;
+  justify-content: center;
+
+  // TODO: different left, transform values for different positions
+  left: 15%;
+  transform-origin: top center;
+  transform: rotate3d(0, 0, 1, 4deg);
+
+  width: 200px;
+  height: 230px;
+  background-color: #fff;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 45%;
+    top: -70px;
+    height: 100px;
+    width: 20px;
+    // TODO: different clothespin images - randomize?
+    background-image: url("../images/clothespinRed.png");
+    background-size: cover;
+    box-shadow: 0 8px 8px -5px rgba(0, 0, 0, 0.4);
+  }
+
+  &:hover {
+    animation: swing 1s linear;
+  }
+
+  .photo {
+    width: 190px;
+    height: 190px;
+    margin-top: 5px;
+  }
+}
+
+@keyframes swing {
+  20% {
+    transform: rotate3d(0, 0, 1, 15deg);
+  }
+
+  40% {
+    transform: rotate3d(0, 0, 1, -15deg);
+  }
+
+  60% {
+    transform: rotate3d(0, 0, 1, 5deg);
+  }
+
+  80% {
+    transform: rotate3d(0, 0, 1, -5deg);
+  }
+
+  100% {
+    transform: rotate3d(0, 0, 1, 4deg);
+  }
+}

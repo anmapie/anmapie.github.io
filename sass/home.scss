@@ -222,10 +222,13 @@ body {
   }
   
   &.work {
-    padding-right: 0;
-    padding-left: 0;
-    background-color: $platinum;
+    align-items: flex-start;
+    height: 400px;
+    padding: 0;
+    //background-color: $platinum;
+    background-color: $stormcloud;
     color: $gray-text;
+    overflow: hidden;
     
     a {
       color: $gray-text;
@@ -283,3 +286,4 @@ body {
 
 @import "partials/slide_carousel";
 @import "partials/instagram_grid";
+@import "partials/clothesline";
