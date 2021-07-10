@@ -55,9 +55,6 @@ $(document).ready(function() {
     }
   });
 
-  // set up slide carousel
-  $(".slide-carousel").slick({ infinite: false });
-
   // set up clothesline
   $(".polaroid").hover(function() {
     var images = $(this).children(".photo").children("img");
@@ -71,7 +68,7 @@ $(document).ready(function() {
     // always starts at the beginning on hover
     movingImg.attr('src', movingImg.attr("src"));
     movingImg.hide();
-    
+
     images.filter(".still").show()
   })
 });
