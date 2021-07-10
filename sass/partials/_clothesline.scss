@@ -22,21 +22,116 @@
   }
 }
 
-.clothesline {
-  position: relative;
-  width: 110%;
-  height: 150px;
-  margin: 0 -50px;
+@mixin clothesline-border {
   border-style: solid;
   border-width: 5px;
   border-color: transparent transparent $sage transparent;
   border-radius: 0 0 80% 80%;
 }
 
+.clothesline {
+  @include clothesline-border();
+  position: relative;
+  width: 110%;
+  height: 150px;
+  margin: 0 -50px;
+
+
+  @include media-max(1000px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    padding-top: 50px;
+    border: none;
+  }
+}
+
+.polaroid-wrapper {
+  position: absolute;
+
+  @include media-max(1000px) {
+    position: relative;
+    margin: 50px 0;
+
+    &::before {
+      @include clothesline-border();
+      content: "";
+      position: absolute;
+      top: -120px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100px;
+      width: 600%;
+      left: -250%;
+    }
+  }
+
+  &:nth-child(1) {
+    @include media-min(1000px) {
+      top: 155px;
+      left: 18%;
+    }
+
+    .polaroid {
+      &::before {
+        background-image: url("../images/clothespinLightBlue.png");
+      }
+
+      @include media-min(1000px) {
+        @include swing-animation(swing-plus5, 5deg);
+
+        transform: rotate3d(0, 0, 1, 5deg);
+        
+        &:hover {
+          animation-name: swing-plus5 
+        }
+      }
+    }
+  }
+
+  &:nth-child(2) {
+    @include media-min(1000px) {
+      top: 160px;
+      left: 42%;
+    }
+
+    .polaroid {  
+      &::before {
+        background-image: url("../images/clothespinRed.png");
+      }
+    }
+  }
+
+  &:nth-child(3) {
+    @include media-min(1000px) {
+      top: 155px;
+      left: 65%;
+    }
+
+    .polaroid {  
+      &::before {
+        background-image: url("../images/clothespinGreen.png");
+      }
+
+      @include media-min(1000px) {
+        @include swing-animation(swing-minus5, -5deg);
+        transform: rotate3d(0, 0, 1, -5deg);
+
+        &:hover {
+          animation-name: swing-minus5 
+        }
+      }
+    }
+  }
+}
+
 .polaroid {
   @include link-overrides($gray-text, $davys-gray);
 
-  position: absolute;
   display: grid;
   grid-template-rows: 225px 1fr;
   grid-gap: 5px;
@@ -45,6 +140,7 @@
   height: 280px;
   background-color: #fff;
   transform-origin: top center;
+  transform: rotate3d(0, 0, 1, 0deg);
 
   &::before {
     content: "";
@@ -57,55 +153,13 @@
     box-shadow: 0 8px 8px -5px rgba(0, 0, 0, 0.4);
   }
 
-  &:nth-child(1) {
-    @include swing-animation(swing-1, 4deg);
-
-    top: 155px;
-    left: 20%;
-    transform: rotate3d(0, 0, 1, 4deg);
-
-    &::before {
-      background-image: url("../images/clothespinLightBlue.png");
-    }
-
-    &:hover {
-      animation: swing-1 1s linear;
-    }
-  }
-
-  &:nth-child(2) {
-    @include swing-animation(swing-2, 0deg);
-
-    top: 160px;
-    left: 42%;
-
-    &::before {
-      background-image: url("../images/clothespinRed.png");
-    }
-
-    &:hover {
-      animation: swing-2 1s linear;
-    }
-  }
-
-  &:nth-child(3) {
-    @include swing-animation(swing-3, -4deg);
-
-    top: 155px;
-    left: 63%;
-    transform: rotate3d(0, 0, 1, -4deg);
-
-    &::before {
-      background-image: url("../images/clothespinGreen.png");
-    }
-
-    &:hover {
-      animation: swing-3 1s linear;
-    }
-  }
-
   &:hover {
+    @include swing-animation(swing-0, 0deg);
+
     cursor: pointer;
+    animation-name: swing-0;
+    animation-duration: 1s;
+    animation-timing-function: linear;
 
     .photo {
       border-color: $davys-gray;
@@ -123,12 +177,13 @@
     width: 220px;
     height: 220px;
     margin-top: 5px;
-    border: 1px solid $platinum;
     overflow: hidden;
+    box-shadow: inset 0 0 10px 5px rgba(0, 0, 0, 0.3);
 
     img {
       height: 220px;
       width: auto;
+      z-index: -1;
 
       &.moving {
         display: none;

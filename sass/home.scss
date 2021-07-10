@@ -223,7 +223,7 @@ body {
   
   &.work {
     align-items: flex-start;
-    height: 575px;
+    min-height: 575px;
     padding: 0;
     background-color: $stormcloud;
     color: $gray-text;
