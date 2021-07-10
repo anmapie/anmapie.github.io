@@ -55,6 +55,20 @@ $(document).ready(function() {
     }
   });
 
-  // set up slide carousel
-  $(".slide-carousel").slick({ infinite: false });
+  // set up clothesline
+  $(".polaroid").hover(function() {
+    var images = $(this).children(".photo").children("img");
+    images.filter(".still").hide();
+    images.filter(".moving").show();
+  }, function() {
+    var images = $(this).children(".photo").children("img");
+    var movingImg = images.filter(".moving");
+    
+    // reload the "moving" image gif so it 
+    // always starts at the beginning on hover
+    movingImg.attr('src', movingImg.attr("src"));
+    movingImg.hide();
+
+    images.filter(".still").show()
+  })
 });

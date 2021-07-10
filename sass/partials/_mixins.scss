@@ -10,11 +10,18 @@
     }
 }
 
-@mixin column-layout($count, $gap: 5px) {
-    -webkit-column-count: $count;
-    -webkit-column-gap: $gap;
-    -moz-column-count: $count;
-    -moz-column-gap: $gap;
-    column-count: $count;
-    column-gap: $gap;
-}
+@mixin link-overrides($color, $hover-color) {
+    color: $color;
+    text-decoration: none;
+  
+    &:active,
+    &:focus {
+      color: $color;
+      text-decoration: none;
+    }
+  
+    &:hover {
+      color: $hover-color;
+      text-decoration: none;
+    }
+  }
