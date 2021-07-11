@@ -1,24 +1,37 @@
-const TOP_POS_RANGE = { min: -20, max: 20 };
+const TOP_POS_RANGE = { min: -25, max: 25 };
 const TAPE_CLASSES = { 1: "right", 2: "center", 3: "left" };
-const WASHI_VARIETIES = 21;
-
+const WASHI_VARIETIES = 20;
+const LABEL_WORD_LIMIT = 6;
+const LAST_WORD_REGEX = new RegExp(/\d|\w+\.{1}/);
 var imagesLoaded = false;
 
 $(document).ready(function() {
+  setUpInstagramGrid();
+  setUpClothesline();
+});
+
+function setUpClothesline() {
+  $(".polaroid").hover(function() {
+    var images = $(this).children(".photo").children("img");
+    images.filter(".still").hide();
+    images.filter(".moving").show();
+  }, function() {
+    var images = $(this).children(".photo").children("img");
+    var movingImg = images.filter(".moving");
+    
+    // reload the "moving" image gif so it 
+    // always starts at the beginning on hover
+    movingImg.attr('src', movingImg.attr("src"));
+    movingImg.hide();
+
+    images.filter(".still").show();
+  });
+}
+
+function setUpInstagramGrid() {
   var imageSection = $("#play");
   var imageGrid = $(".insta-polaroid-container");
   
-  var fadeInImages = function() {
-    if (imagesLoaded) {    
-      // fade in images in a random order
-      $(".insta-polaroid").each(function(_index, containerEl) {
-        setTimeout(function() { $(containerEl).animate({ opacity: 1 }, 1000); }, Math.floor(Math.random() * 1501) + 150);
-      });
-    } else {
-      setTimeout(fadeInImages, 200);
-    }
-  }
-
   // start loading instagram images as soon as page loads
   $.ajax({
     type: "GET",
@@ -34,16 +47,13 @@ $(document).ready(function() {
         var instaPolaroid = $(`<a class="insta-polaroid" href="${post["url"]}">`)
         var imageContainer = $(`<div class="photo">`);
         var label = $(`<div class="label">`);
-        var tapeClass = `tape-${TAPE_CLASSES[getRandomNumberInRange(1, 4)]}`;
-        var washiClass = `washi-${getRandomNumberInRange(1, WASHI_VARIETIES)}`;
 
-
-        label.text(`${post["caption"].substring(0, 45)}...`);
+        label.text(buildLabelText(post["caption"]));
         imageContainer.html(`<img src="${post["image"]}"></img>`);
         instaPolaroid.append(imageContainer);
         instaPolaroid.append(label);
-        instaPolaroid.addClass([tapeClass, washiClass]);
-        instaPolaroid.css({ "margin-top": `${getRandomNumberInRange(TOP_POS_RANGE.min, TOP_POS_RANGE.max)}px`});
+        instaPolaroid.addClass(getTapeClasses());
+        instaPolaroid.css(getPolaroidCss());
         
         imageGrid.append(instaPolaroid);
         postCount++; 
@@ -73,25 +83,56 @@ $(document).ready(function() {
       fadeInImages();
     }
   });
+}
 
-  // set up clothesline
-  $(".polaroid").hover(function() {
-    var images = $(this).children(".photo").children("img");
-    images.filter(".still").hide();
-    images.filter(".moving").show();
-  }, function() {
-    var images = $(this).children(".photo").children("img");
-    var movingImg = images.filter(".moving");
-    
-    // reload the "moving" image gif so it 
-    // always starts at the beginning on hover
-    movingImg.attr('src', movingImg.attr("src"));
-    movingImg.hide();
+function fadeInImages() {
+  if (imagesLoaded) {    
+    // fade in images in a random order
+    $(".insta-polaroid").each(function(_index, containerEl) {
+      setTimeout(function() { $(containerEl).animate({ opacity: 1 }, 1000); }, Math.floor(Math.random() * 1501) + 150);
+    });
+  } else {
+    setTimeout(fadeInImages, 200);
+  }
+}
 
-    images.filter(".still").show()
-  })
-});
+function getPolaroidCss() {
+  var marginVal = getRandoIntInRange(TOP_POS_RANGE.min, TOP_POS_RANGE.max);
 
-function getRandomNumberInRange(min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
+  return {
+    "margin-top": `${marginVal}px`
+  }
+}
+
+function getTapeClasses() { 
+  var washiClass = `washi-${getRandoIntInRange(1, WASHI_VARIETIES)}`;
+  var tapeClass = "";
+  switch(getRandoIntInRange(1, 3)) {
+    case 1:
+      tapeClass = "tape-right";
+      break;
+    case 2:
+      tapeClass = "tape-center";
+      break;
+    case 3:
+      tapeClass = "tape-left";
+      break;
+  }
+
+  return [tapeClass, washiClass];
+}
+
+function buildLabelText(label) {
+  var labelWords = label.split(" ");
+  var newLabel = labelWords.slice(0, LABEL_WORD_LIMIT).join(" ");
+
+  if (!LAST_WORD_REGEX.test(newLabel)) {
+    newLabel += "...";
+  }
+
+  return newLabel;
+}
+
+function getRandoIntInRange(min, max) {
+  return Math.floor(Math.random() * (max + 1 - min) + min);
 }

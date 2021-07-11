@@ -127,6 +127,10 @@ $photoSize: 240;
     }
   }
 
+  .label {
+    width: 230px;
+  }
+
   img {
     max-width: #{$photoSize}px;
     height: auto;
