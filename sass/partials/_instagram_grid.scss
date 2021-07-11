@@ -67,3 +67,29 @@
     }
   }
 }
+
+// new
+$photoSize: 240;
+
+.insta-polaroid-container {
+  position: relative;
+}
+
+.insta-polaroid {
+  @include polaroid($photoSize, 0.5);
+
+  &::before {
+    content: "";
+    position: absolute;
+    background-image: url("../images/washi/washi1.png");
+    height: 30px;
+    width: 100px;
+    background-size: cover;
+    box-shadow: 0 8px 8px -5px rgba(0, 0, 0, 0.4);
+  }
+
+  img {
+    max-width: #{$photoSize}px;
+    height: auto;
+  }
+}

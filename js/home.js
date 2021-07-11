@@ -1,13 +1,16 @@
 var imagesLoaded = false;
+// const LEFT_POSITIONS = { min: "-120%", max: "-100%" };
+// const CENTER_POSITIONS = { min: "-80%", max: "-60%" };
+// const RIGHT_POSITIONS = { min: }
 
 $(document).ready(function() {
   var imageSection = $("#play");
-  var imageGrid = $(".instagram-grid");
+  var imageGrid = $(".insta-polaroid-container");
   
   var fadeInImages = function() {
     if (imagesLoaded) {    
       // fade in images in a random order
-      $(".image-container").each(function(_index, containerEl) {
+      $(".insta-polaroid").each(function(_index, containerEl) {
         setTimeout(function() { $(containerEl).animate({ opacity: 1 }, 1000); }, Math.floor(Math.random() * 1501) + 150);
       });
     } else {
@@ -21,13 +24,19 @@ $(document).ready(function() {
     dataType: "json",
     url: "https://us-west2-sanguine-link-226918.cloudfunctions.net/recent-instagram-posts-v2?getPosts=true",
     success: function(response) {
-      var posts = response["posts"].slice(0, 12);
+      var posts = response["posts"].slice(0, 3);
       
       $.each(posts, function(_index, post) {     
-        var imageHtml = "<img src='" + post["image"] + "'></img>"
-        var imageLink = $("<div class='image-container'><a href='" + post["url"] + "'>" + imageHtml + "</a></div>");
-       
-        imageGrid.append(imageLink);
+        var instaPolaroid = $(`<a class="insta-polaroid" href="${post["url"]}">`)
+        var imageContainer = $(`<div class="photo">`);
+        var label = $(`<div class="label">`);
+
+        label.text(`${post["caption"].substring(0, 45)}...`);
+        imageContainer.html(`<img src="${post["image"]}"></img>`);
+        instaPolaroid.append(imageContainer);
+        instaPolaroid.append(label);
+
+        imageGrid.append(instaPolaroid);
       });
 
       imageGrid.children(".loading").remove();

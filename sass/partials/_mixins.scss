@@ -11,17 +11,92 @@
 }
 
 @mixin link-overrides($color, $hover-color) {
+  color: $color;
+  text-decoration: none;
+
+  &:active,
+  &:focus {
     color: $color;
     text-decoration: none;
-  
-    &:active,
-    &:focus {
-      color: $color;
-      text-decoration: none;
-    }
-  
-    &:hover {
-      color: $hover-color;
-      text-decoration: none;
+  }
+
+  &:hover {
+    color: $hover-color;
+    text-decoration: none;
+  }
+}
+
+@mixin polaroid($photoSize, $shadowAlpha) {
+  $frameWidth: $photoSize + 10;
+  $frameHeight: $frameWidth + 50;
+  $rowHeight : $photoSize - 5;
+
+  @include link-overrides($gray-text, $davys-gray);
+
+  display: grid;
+  grid-template-rows: #{$rowHeight}px 1fr;
+  grid-gap: 5px;
+  justify-items: center;
+  width: #{$frameWidth}px;
+  height: #{$frameHeight}px;
+  background-color: #fff;
+  transform-origin: top center;
+  transform: rotate3d(0, 0, 1, 0deg);
+
+  .photo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: #{$photoSize}px;
+    height: #{$photoSize}px;
+    margin-top: 5px;
+    overflow: hidden;
+    box-shadow: inset 0 0 10px 5px rgba(0, 0, 0, $shadowAlpha);
+
+    img {
+      z-index: -1;
     }
   }
+
+  .label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    text-align: center;
+    font-family: "Nanum Pen Script";
+    font-size: 20px;
+    font-weight: bold;
+  }
+}
+
+@mixin swing-animation($name, $origindeg) {
+  @keyframes #{$name} {
+    20% {
+      transform: rotate3d(0, 0, 1, 6deg);
+    }
+  
+    40% {
+      transform: rotate3d(0, 0, 1, -6deg);
+    }
+  
+    60% {
+      transform: rotate3d(0, 0, 1, 5deg);
+    }
+  
+    80% {
+      transform: rotate3d(0, 0, 1, -5deg);
+    }
+  
+    100% {
+      transform: rotate3d(0, 0, 1, $origindeg);
+    }
+  }
+}
+
+@mixin clothesline-border {
+  border-style: solid;
+  border-width: 5px;
+  border-color: transparent transparent $sage transparent;
+  border-radius: 0 0 80% 80%;
+}
