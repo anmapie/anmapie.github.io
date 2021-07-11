@@ -72,20 +72,59 @@
 $photoSize: 240;
 
 .insta-polaroid-container {
-  position: relative;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  row-gap: 80px;
+  width: 100%;
+  padding-bottom: 25px;
 }
 
 .insta-polaroid {
   @include polaroid($photoSize, 0.5);
+  box-shadow: 0 8px 8px -5px rgba(0, 0, 0, 0.4);
 
   &::before {
     content: "";
     position: absolute;
-    background-image: url("../images/washi/washi1.png");
     height: 30px;
     width: 100px;
     background-size: cover;
     box-shadow: 0 8px 8px -5px rgba(0, 0, 0, 0.4);
+  }
+
+  &.tape-right {
+    transform: rotate(3deg);
+
+    &::before {
+      top: -5px;
+      left: -20px;
+      transform: rotate(-20deg);
+    }
+  }
+
+  &.tape-center {
+    &::before {
+      top: -15px;
+    }
+  }
+
+  &.tape-left {
+    transform: rotate(-5deg);
+
+    &::before {
+      top: -5px;
+      left: 175px;
+      transform: rotate(30deg);
+    }
+  }
+
+  @for $i from 1 through 21 {
+    &.washi-#{$i} {
+      &::before {
+        background-image: url("../images/washi/washi#{$i}.png");
+      }
+    }
   }
 
   img {

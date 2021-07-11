@@ -1,7 +1,8 @@
+const TOP_POS_RANGE = { min: -20, max: 20 };
+const TAPE_CLASSES = { 1: "right", 2: "center", 3: "left" };
+const WASHI_VARIETIES = 21;
+
 var imagesLoaded = false;
-// const LEFT_POSITIONS = { min: "-120%", max: "-100%" };
-// const CENTER_POSITIONS = { min: "-80%", max: "-60%" };
-// const RIGHT_POSITIONS = { min: }
 
 $(document).ready(function() {
   var imageSection = $("#play");
@@ -24,19 +25,28 @@ $(document).ready(function() {
     dataType: "json",
     url: "https://us-west2-sanguine-link-226918.cloudfunctions.net/recent-instagram-posts-v2?getPosts=true",
     success: function(response) {
-      var posts = response["posts"].slice(0, 3);
+      var posts = response["posts"].slice(0, 12);
+      var postCount = 0
+      var rowOffset = 250;
+      var postsPerRow = 3
       
-      $.each(posts, function(_index, post) {     
+      $.each(posts, function(_index, post) {   
         var instaPolaroid = $(`<a class="insta-polaroid" href="${post["url"]}">`)
         var imageContainer = $(`<div class="photo">`);
         var label = $(`<div class="label">`);
+        var tapeClass = `tape-${TAPE_CLASSES[getRandomNumberInRange(1, 4)]}`;
+        var washiClass = `washi-${getRandomNumberInRange(1, WASHI_VARIETIES)}`;
+
 
         label.text(`${post["caption"].substring(0, 45)}...`);
         imageContainer.html(`<img src="${post["image"]}"></img>`);
         instaPolaroid.append(imageContainer);
         instaPolaroid.append(label);
-
+        instaPolaroid.addClass([tapeClass, washiClass]);
+        instaPolaroid.css({ "margin-top": `${getRandomNumberInRange(TOP_POS_RANGE.min, TOP_POS_RANGE.max)}px`});
+        
         imageGrid.append(instaPolaroid);
+        postCount++; 
       });
 
       imageGrid.children(".loading").remove();
@@ -81,3 +91,7 @@ $(document).ready(function() {
     images.filter(".still").show()
   })
 });
+
+function getRandomNumberInRange(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
