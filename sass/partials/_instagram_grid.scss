@@ -71,6 +71,31 @@
 // new
 $photoSize: 240;
 
+.insta-polaroid-header {
+  position: relative;
+  padding: 15px 30px;
+  background-color: #fff;
+  font-size: 32px;
+  margin-top: 20px;
+  margin-bottom: 60px;
+  font-family: "Nanum Pen Script";
+  font-weight: bold;
+  box-shadow: $default-box-shadow;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    right: 50%;
+    transform: translate(50%,-50%);
+    height: 30px;
+    width: 100px;
+    background-image: url("../images/washi/washi1.png");
+    background-size: cover;
+    box-shadow: $default-box-shadow;
+  }
+}
+
 .insta-polaroid-container {
   display: flex;
   flex-flow: row wrap;
@@ -82,7 +107,7 @@ $photoSize: 240;
 
 .insta-polaroid {
   @include polaroid($photoSize, 0.5);
-  box-shadow: 0 8px 8px -5px rgba(0, 0, 0, 0.4);
+  box-shadow: $default-box-shadow;
 
   &::before {
     content: "";
@@ -90,7 +115,7 @@ $photoSize: 240;
     height: 30px;
     width: 100px;
     background-size: cover;
-    box-shadow: 0 8px 8px -5px rgba(0, 0, 0, 0.4);
+    box-shadow: $default-box-shadow;
   }
 
   &.tape-right {
