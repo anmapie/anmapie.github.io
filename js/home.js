@@ -3,7 +3,10 @@ const TAPE_CLASSES = { 1: "right", 2: "center", 3: "left" };
 const WASHI_VARIETIES = 20;
 const LABEL_WORD_LIMIT = 6;
 const LAST_WORD_REGEX = new RegExp(/\d|\w+\.{1}/);
+const MAX_INSTA_POSTS = 12;
+const INSTA_SECTION_OFFSET = 300;
 var imagesLoaded = false;
+var imagesVisible = false;
 
 $(document).ready(function() {
   setUpInstagramGrid();
@@ -31,6 +34,7 @@ function setUpClothesline() {
 function setUpInstagramGrid() {
   var imageSection = $("#play");
   var imageGrid = $(".insta-polaroid-container");
+  var instaPolaroids = [];
   
   // start loading instagram images as soon as page loads
   $.ajax({
@@ -38,28 +42,15 @@ function setUpInstagramGrid() {
     dataType: "json",
     url: "https://us-west2-sanguine-link-226918.cloudfunctions.net/recent-instagram-posts-v2?getPosts=true",
     success: function(response) {
-      var posts = response["posts"].slice(0, 12);
-      var postCount = 0
-      var rowOffset = 250;
-      var postsPerRow = 3
-      
-      $.each(posts, function(_index, post) {   
-        var instaPolaroid = $(`<a class="insta-polaroid" href="${post["url"]}">`)
-        var imageContainer = $(`<div class="photo">`);
-        var label = $(`<div class="label">`);
+      var posts = response["posts"].slice(0, MAX_INSTA_POSTS);
 
-        label.text(buildLabelText(post["caption"]));
-        imageContainer.html(`<img src="${post["image"]}"></img>`);
-        instaPolaroid.append(imageContainer);
-        instaPolaroid.append(label);
-        instaPolaroid.addClass(getTapeClasses());
-        instaPolaroid.css(getPolaroidCss());
-        
-        imageGrid.append(instaPolaroid);
-        postCount++; 
+      instaPolaroids.forEach((instaPolaroid, index) => {
+        var post = posts[index];
+        instaPolaroid.attr("href", post["url"]);
+        instaPolaroid.children(".photo").html(`<img src="${post["image"]}"></img>`);
+        instaPolaroid.children(".label").text(buildLabelText(post["caption"]));
       });
-
-      imageGrid.children(".loading").remove();
+      
       imagesLoaded = true;
     },
     error: function(_response) {
@@ -70,17 +61,26 @@ function setUpInstagramGrid() {
     }
   });
 
+  // add all the empty polaroids to the frid
+  for (i = 0; i < MAX_INSTA_POSTS; i++){
+    instaPolaroids.push(buildInstaPolaroid());
+  }
+  imageGrid.append(instaPolaroids);
+  imageGrid.children(".loading").remove();
+
   // check if the instagram section is already visible on load + fade in images
-  if (imageSection.offset().top <= $(window).height()) {
+  if (imageSection.offset().top - INSTA_SECTION_OFFSET <= $(window).scrollTop()) {
     fadeInImages();
   }
 
   // otherwise, fade in images when instagram section is scrolled into view
   $(window).scroll(function() {
-    var scrollTriggerHeight = imageSection.offset().top + imageSection.outerHeight() - $(window).height() - 600;
-  
-    if ($(this).scrollTop() > scrollTriggerHeight) {
-      fadeInImages();
+    if (!imagesVisible) {
+      var scrollTriggerHeight = imageSection.offset().top - INSTA_SECTION_OFFSET;
+
+      if ($(this).scrollTop() > scrollTriggerHeight) {
+        fadeInImages();
+      }
     }
   });
 }
@@ -89,11 +89,23 @@ function fadeInImages() {
   if (imagesLoaded) {    
     // fade in images in a random order
     $(".insta-polaroid").each(function(_index, containerEl) {
-      setTimeout(function() { $(containerEl).animate({ opacity: 1 }, 1000); }, Math.floor(Math.random() * 1501) + 150);
+      var imageEl = $(containerEl).find("img");
+      setTimeout(function() { imageEl.animate({ opacity: 1 }, 1000); }, Math.floor(Math.random() * 1501) + 150);
     });
   } else {
     setTimeout(fadeInImages, 200);
   }
+}
+
+function buildInstaPolaroid() {
+  var instaPolaroid = $(`<a class="insta-polaroid" href="">`)
+
+  instaPolaroid.append($(`<div class="photo">`));
+  instaPolaroid.append($(`<div class="label">`));
+  instaPolaroid.addClass(getTapeClasses());
+  instaPolaroid.css(getPolaroidCss());
+
+  return instaPolaroid;
 }
 
 function getPolaroidCss() {
