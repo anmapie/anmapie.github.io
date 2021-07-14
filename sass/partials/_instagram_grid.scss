@@ -1,68 +1,3 @@
-.instagram-grid {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, 240px);
-  grid-gap: 5px;
-  width: 250px;
-  min-height: 500px;
-  padding: 5px;
-  background-color: $platinum;
-
-  @include media-min(560px) {
-    width: 495px
-  }
-
-  @include media-min(750px) {
-    width:740px;
-  }
-
-  @include media-min(1175px) {
-    grid-template-columns: repeat(auto-fit, 280px);
-    width: 1145px;
-  }
-
-
-  .image-container {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 280px;
-    width:  280px;
-    overflow: hidden;
-    opacity: 0;
-
-    @include media-max(750px) {
-      &:nth-child(n+7) {
-        display: none;
-      }
-    }
-  
-    @include media-max(1175px) {
-      height: 240px;
-      width: 240px;
-
-      &:nth-child(n+10) {
-        display: none;
-      }
-    }
-
-    a {
-      line-height: 0;
-    }
-
-    img {
-      max-width: 240px;
-      height: auto;
-
-      @include media-min(1175px) {
-        max-width: 280px;
-      }
-    }
-  }
-}
-
-// new
 $photoSize: 240;
 
 .insta-polaroid-header {
@@ -99,13 +34,6 @@ $photoSize: 240;
   width: 100%;
   min-height: 400px;
   padding: 0 25px 25px;
-
-  .loading {
-    position: absolute;
-    top: 50%;
-    right: 50%;
-    transform: translate(50%,-50%);
-  }
 }
 
 .insta-polaroid {
@@ -121,6 +49,17 @@ $photoSize: 240;
     box-shadow: $default-box-shadow;
   }
 
+  &.loading {
+    .photo {
+      &::before {
+        @include pseudo-icon("\f083");
+        font-size: 40px;
+        opacity: 0.2;
+        animation: fade-in-fade-out 3s linear infinite;
+      }
+    }
+  }
+
   &.tape-right {
     transform: rotate(3deg);
 
@@ -129,11 +68,19 @@ $photoSize: 240;
       left: -20px;
       transform: rotate(-20deg);
     }
+
+    &:hover {
+      transform: rotate(3deg) scale(1.02);
+    }
   }
 
   &.tape-center {
     &::before {
       top: -15px;
+    }
+
+    &:hover {
+      transform: scale(1.02);
     }
   }
 
@@ -144,6 +91,10 @@ $photoSize: 240;
       top: -5px;
       left: 175px;
       transform: rotate(30deg);
+    }
+
+    &:hover {
+      transform: rotate(-5deg) scale(1.02);
     }
   }
 
@@ -163,5 +114,23 @@ $photoSize: 240;
     max-width: #{$photoSize}px;
     height: auto;
     opacity: 0;
+  }
+}
+
+@keyframes fade-in-fade-out {
+  25% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 0.8
+  }
+
+  75% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 0.2;
   }
 }

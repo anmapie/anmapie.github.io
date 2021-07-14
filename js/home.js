@@ -46,9 +46,10 @@ function setUpInstagramGrid() {
 
       instaPolaroids.forEach((instaPolaroid, index) => {
         var post = posts[index];
+        instaPolaroid.removeClass("loading");
         instaPolaroid.attr("href", post["url"]);
         instaPolaroid.children(".photo").html(`<img src="${post["image"]}"></img>`);
-        instaPolaroid.children(".label").text(buildLabelText(post["caption"]));
+        instaPolaroid.children(".label").text(buildLabelText(post["caption"]))
       });
       
       imagesLoaded = true;
@@ -61,12 +62,12 @@ function setUpInstagramGrid() {
     }
   });
 
-  // add all the empty polaroids to the frid
+  // add all the empty polaroids to the grid
   for (i = 0; i < MAX_INSTA_POSTS; i++){
     instaPolaroids.push(buildInstaPolaroid());
   }
+  
   imageGrid.append(instaPolaroids);
-  imageGrid.children(".loading").remove();
 
   // check if the instagram section is already visible on load + fade in images
   if (imageSection.offset().top - INSTA_SECTION_OFFSET <= $(window).scrollTop()) {
@@ -98,7 +99,7 @@ function fadeInImages() {
 }
 
 function buildInstaPolaroid() {
-  var instaPolaroid = $(`<a class="insta-polaroid" href="">`)
+  var instaPolaroid = $(`<a class="insta-polaroid loading" target="_blank" href="">`)
 
   instaPolaroid.append($(`<div class="photo">`));
   instaPolaroid.append($(`<div class="label">`));

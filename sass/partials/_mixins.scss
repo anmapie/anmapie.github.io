@@ -26,6 +26,16 @@
   }
 }
 
+@mixin pseudo-icon($icon-unicode) {
+  content: $icon-unicode;
+  font-family: "Font Awesome 5 Free"; 
+  font-weight: 900;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
 @mixin polaroid($photoSize, $shadowAlpha) {
   $frameWidth: $photoSize + 10;
   $frameHeight: $frameWidth + 50;
