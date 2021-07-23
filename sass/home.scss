@@ -31,7 +31,7 @@ body {
   padding: 5px 10px;
   background-color: $davys-gray;
   color: $alice-blue;
-  box-shadow: 0 8px 8px -5px rgba(0, 0, 0, 0.4);
+  box-shadow: $default-box-shadow;
 
   @include media-min(560px) {
     padding: 5px 30px;
@@ -107,7 +107,6 @@ body {
     height: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    overflow: hidden;
   }
   
   &.about {
@@ -238,19 +237,13 @@ body {
     align-items: flex-start;
     padding-top: 30px;
     background-color: $wild-blue-yonder;
-    color: $davys-gray;
+    color: $stormcloud;
 
     .section-content-wrapper {
       flex-direction: column;
-    }
 
-    h2 {
-      margin-top: 0;
-      margin-bottom: 30px;
-      font-size: 21px;
-
-      @include media-min(400px) {
-        font-size: 28px;
+      @include media-max(1200px) {
+        padding: 10px;
       }
     }
   }

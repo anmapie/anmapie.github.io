@@ -1,69 +1,148 @@
-.instagram-grid {
+$photoSize: 240;
+
+.insta-polaroid-header {
   position: relative;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, 240px);
-  grid-gap: 5px;
-  width: 250px;
-  min-height: 500px;
-  padding: 5px;
-  background-color: $platinum;
+  padding: 15px 30px;
+  background-color: #fff;
+  font-size: 32px;
+  margin-top: 20px;
+  margin-bottom: 65px;
+  font-family: "Nanum Pen Script";
+  font-weight: bold;
+  text-align: center;
+  box-shadow: $default-box-shadow;
 
-  @include media-min(560px) {
-    width: 495px
-  }
-
-  @include media-min(750px) {
-    width:740px;
-  }
-
-  @include media-min(1175px) {
-    grid-template-columns: repeat(auto-fit, 280px);
-    width: 1145px;
-  }
-
-  .loading {
+  &::before {
+    content: "";
     position: absolute;
-    top: 45%;
-    left: 45%;
-    color: $wild-blue-yonder;
+    top: -2px;
+    right: 50%;
+    transform: translate(50%,-50%);
+    height: 30px;
+    width: 100px;
+    background-image: url("../images/washi/washi1.png");
+    background-size: cover;
+    box-shadow: $default-box-shadow;
+  }
+}
+
+.insta-polaroid-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  row-gap: 80px;
+  column-gap: 15px;
+  width: 100%;
+  min-height: 400px;
+  padding: 0 25px 25px;
+}
+
+.insta-polaroid {
+  @include polaroid($photoSize, 0.5);
+  box-shadow: $default-box-shadow;
+
+  &::before {
+    content: "";
+    position: absolute;
+    height: 30px;
+    width: 100px;
+    background-size: cover;
+    box-shadow: $default-box-shadow;
   }
 
-  .image-container {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 280px;
-    width:  280px;
-    overflow: hidden;
+  &.loading {
+    .photo {
+      &::before {
+        @include pseudo-icon("\f083");
+        font-size: 40px;
+        opacity: 0.2;
+        animation: fade-in-fade-out 3s linear infinite;
+      }
+    }
+  }
+
+  &.tape-right {
+    transform: rotate(3deg);
+
+    &::before {
+      top: -5px;
+      left: -20px;
+      transform: rotate(-20deg);
+    }
+
+    &:hover {
+      transform: rotate(3deg) scale(1.02);
+    }
+  }
+
+  &.tape-center {
+    &::before {
+      top: -15px;
+    }
+
+    &:hover {
+      transform: scale(1.02);
+    }
+  }
+
+  &.tape-left {
+    transform: rotate(-5deg);
+
+    &::before {
+      top: -5px;
+      left: 175px;
+      transform: rotate(30deg);
+    }
+
+    &:hover {
+      transform: rotate(-5deg) scale(1.02);
+    }
+  }
+
+  @for $i from 1 through 21 {
+    &.washi-#{$i} {
+      &::before {
+        background-image: url("../images/washi/washi#{$i}.png");
+      }
+    }
+  }
+
+  .label {
+    width: 230px;
+  }
+
+  img {
+    max-width: #{$photoSize}px;
+    height: auto;
     opacity: 0;
+  }
 
-    @include media-max(750px) {
-      &:nth-child(n+7) {
-        display: none;
-      }
+  // ew, right? but since margin is set inline for the
+  // "random staggered" effect, we need to use !imporant
+  // for the single-column layout
+  @include media-max(590px) {
+    margin-top: 0 !important;
+
+    &:nth-child(n+5) {
+      display: none;
     }
-  
-    @include media-max(1175px) {
-      height: 240px;
-      width: 240px;
+  }
+}
 
-      &:nth-child(n+10) {
-        display: none;
-      }
-    }
+@keyframes fade-in-fade-out {
+  25% {
+    opacity: 0.5;
+  }
 
-    a {
-      line-height: 0;
-    }
+  50% {
+    opacity: 0.8
+  }
 
-    img {
-      max-width: 240px;
-      height: auto;
+  75% {
+    opacity: 0.5;
+  }
 
-      @include media-min(1175px) {
-        max-width: 280px;
-      }
-    }
+  100% {
+    opacity: 0.2;
   }
 }

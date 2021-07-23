@@ -1,33 +1,4 @@
-@mixin swing-animation($name, $origindeg) {
-  @keyframes #{$name} {
-    20% {
-      transform: rotate3d(0, 0, 1, 6deg);
-    }
-  
-    40% {
-      transform: rotate3d(0, 0, 1, -6deg);
-    }
-  
-    60% {
-      transform: rotate3d(0, 0, 1, 5deg);
-    }
-  
-    80% {
-      transform: rotate3d(0, 0, 1, -5deg);
-    }
-  
-    100% {
-      transform: rotate3d(0, 0, 1, $origindeg);
-    }
-  }
-}
-
-@mixin clothesline-border {
-  border-style: solid;
-  border-width: 5px;
-  border-color: transparent transparent $sage transparent;
-  border-radius: 0 0 80% 80%;
-}
+$photoSize: 220;
 
 .clothesline {
   @include clothesline-border();
@@ -130,17 +101,7 @@
 }
 
 .polaroid {
-  @include link-overrides($gray-text, $davys-gray);
-
-  display: grid;
-  grid-template-rows: 225px 1fr;
-  grid-gap: 5px;
-  justify-items: center;
-  width: 230px;
-  height: 280px;
-  background-color: #fff;
-  transform-origin: top center;
-  transform: rotate3d(0, 0, 1, 0deg);
+  @include polaroid($photoSize, 0.3);
 
   &::before {
     content: "";
@@ -150,7 +111,7 @@
     height: 100px;
     width: 20px;
     background-size: cover;
-    box-shadow: 0 8px 8px -5px rgba(0, 0, 0, 0.4);
+    box-shadow: $default-box-shadow;
   }
 
   &:hover {
@@ -171,35 +132,13 @@
   }
 
   .photo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 220px;
-    height: 220px;
-    margin-top: 5px;
-    overflow: hidden;
-    box-shadow: inset 0 0 10px 5px rgba(0, 0, 0, 0.3);
-
     img {
-      height: 220px;
+      height: #{$photoSize}px;
       width: auto;
-      z-index: -1;
-
+      
       &.moving {
         display: none;
       }
     }
   }
-
-  .label {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 200px;
-    text-align: center;
-    font-family: "Nanum Pen Script";
-    font-size: 20px;
-    font-weight: bold;
-  }
 }
-
