@@ -241,6 +241,10 @@ body {
 
     .section-content-wrapper {
       flex-direction: column;
+
+      @include media-max(1200px) {
+        padding: 10px;
+      }
     }
   }
 }

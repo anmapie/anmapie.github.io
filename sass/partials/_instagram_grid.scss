@@ -9,6 +9,7 @@ $photoSize: 240;
   margin-bottom: 65px;
   font-family: "Nanum Pen Script";
   font-weight: bold;
+  text-align: center;
   box-shadow: $default-box-shadow;
 
   &::before {
@@ -114,6 +115,17 @@ $photoSize: 240;
     max-width: #{$photoSize}px;
     height: auto;
     opacity: 0;
+  }
+
+  // ew, right? but since margin is set inline for the
+  // "random staggered" effect, we need to use !imporant
+  // for the single-column layout
+  @include media-max(590px) {
+    margin-top: 0 !important;
+
+    &:nth-child(n+5) {
+      display: none;
+    }
   }
 }
 
