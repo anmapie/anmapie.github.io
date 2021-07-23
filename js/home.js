@@ -66,7 +66,6 @@ function setUpInstagramGrid() {
   for (i = 0; i < MAX_INSTA_POSTS; i++){
     instaPolaroids.push(buildInstaPolaroid());
   }
-  
   imageGrid.append(instaPolaroids);
 
   // check if the instagram section is already visible on load + fade in images
@@ -109,6 +108,8 @@ function buildInstaPolaroid() {
   return instaPolaroid;
 }
 
+// assign a random top margin (within a range) to give the photos
+// a "staggered" effect in their rows
 function getPolaroidCss() {
   var marginVal = getRandoIntInRange(TOP_POS_RANGE.min, TOP_POS_RANGE.max);
 
@@ -117,6 +118,7 @@ function getPolaroidCss() {
   }
 }
 
+// assign a random tape variety and side
 function getTapeClasses() { 
   var washiClass = `washi-${getRandoIntInRange(1, WASHI_VARIETIES)}`;
   var tapeClass = "";
@@ -135,6 +137,8 @@ function getTapeClasses() {
   return [tapeClass, washiClass];
 }
 
+// labels are word limited, and if they don't represent a full sentence
+// (end with a period), we'll append an ellipsis
 function buildLabelText(label) {
   var labelWords = label.split(" ");
   var newLabel = labelWords.slice(0, LABEL_WORD_LIMIT).join(" ");
