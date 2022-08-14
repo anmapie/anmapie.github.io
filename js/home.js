@@ -40,7 +40,7 @@ function setUpInstagramGrid() {
   $.ajax({
     type: "GET",
     dataType: "json",
-    url: "https://us-west2-sanguine-link-226918.cloudfunctions.net/recent-instagram-posts-v2?getPosts=true",
+    url: "https://us-west1-sanguine-link-226918.cloudfunctions.net/recent-instagram-posts?getPosts=true",
     success: function(response) {
       var posts = response["posts"].slice(0, MAX_INSTA_POSTS);
 
