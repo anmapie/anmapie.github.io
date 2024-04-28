@@ -166,7 +166,7 @@ body {
     
         &:nth-child(2) {
           &::before {
-            content: "🚚 ";
+            content: "🚀 ";
           }
         }
     
@@ -184,23 +184,17 @@ body {
     
         &:nth-child(5) {
           &::before {
-            content: "📚 ";
+            content: "🏍️ ";
           }
         }
     
         &:nth-child(6) {
           &::before {
-            content: "🏍️ ";
-          }
-        }
-    
-        &:nth-child(7) {
-          &::before {
             content: "😻 ";
           }
         }
     
-        &:nth-child(8) {
+        &:nth-child(7) {
           &::before {
             content: "🍰 ";
           }

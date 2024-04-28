@@ -98,7 +98,7 @@ function fadeInImages() {
 }
 
 function buildInstaPolaroid() {
-  var instaPolaroid = $(`<a class="insta-polaroid loading" target="_blank" href="">`)
+  var instaPolaroid = $(`<a class="insta-polaroid loading" target="_blank" rel="noreferrer" href="">`)
 
   instaPolaroid.append($(`<div class="photo">`));
   instaPolaroid.append($(`<div class="label">`));
