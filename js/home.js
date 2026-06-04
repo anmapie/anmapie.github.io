@@ -2,7 +2,8 @@ const TOP_POS_RANGE = { min: -25, max: 25 };
 const TAPE_CLASSES = { 1: "right", 2: "center", 3: "left" };
 const WASHI_VARIETIES = 20;
 const LABEL_WORD_LIMIT = 6;
-const LAST_WORD_REGEX = new RegExp(/[\d+|\w+]\.{1}/);
+const LAST_WORD_REGEX = /\w+\.$/;
+const EMOJI_REGEX = /\p{Emoji_Presentation}/u;
 const MAX_INSTA_POSTS = 12;
 const INSTA_SECTION_OFFSET = 300;
 var imagesLoaded = false;
@@ -138,16 +139,62 @@ function getTapeClasses() {
 }
 
 // labels are word limited, and if they don't represent a full sentence
-// (end with a period), we'll append an ellipsis
+// (end with a period or emoji), we'll append an ellipsis
 function buildLabelText(label) {
   var labelWords = label.split(" ");
-  var newLabel = labelWords.slice(0, LABEL_WORD_LIMIT).join(" ");
 
-  if (!LAST_WORD_REGEX.test(newLabel)) {
-    newLabel += "...";
+  // do an initial slice to the word limmit
+  var truncatedLabelWords = labelWords.slice(0, LABEL_WORD_LIMIT);
+  var newLabelWords = [];
+
+  // I do a thing where I put a lot of emojis together with no spaces.
+  // This registers as a single word and causes overflow.
+  // So we're going to find any emoji blobs and split them up.
+  for (var word of truncatedLabelWords) {
+    if(EMOJI_REGEX.test(word)) {
+      // I am NOT going to handle the case where there are emojis + words together.
+      // I do not do this often. I will deal with it when I need to deal with it.
+      newLabelWords = [ 
+        ...newLabelWords,
+        ...word
+      ].flat();
+    } else {
+      newLabelWords.push(word);
+    }
   }
 
-  return newLabel;
+  // re-slice to the limit and assemble the sentence
+  newLabelWords = newLabelWords.slice(0, LABEL_WORD_LIMIT);
+
+  // I AM PICKY, so we are going to reassemble the sentence with the following rules:
+  // 1. Single space between word and word
+  // 2. Single space between word and emoji
+  // 3. NO space between emoji and emoji
+  var labelSentence = newLabelWords.reduce((accumulator, currentWord, index) => {
+  // If it's the very first word, just start the sentence with it
+  if (index === 0) return currentWord;
+
+  var previousWord = newLabelWords[index - 1];
+
+  // Check if both the previous item and current item are emojis
+  var isPrevEmoji = EMOJI_REGEX.test(previousWord);
+  var isCurrentEmoji = EMOJI_REGEX.test(currentWord);
+
+  if (isPrevEmoji && isCurrentEmoji) {
+    // No space between consecutive emojis
+    return accumulator + currentWord;
+  } else {
+    // Add a space for everything else
+    return accumulator + " " + currentWord;
+  }
+}, "");
+
+  // if the sentence doesn't end with a period, append an ellipsis
+  if (!LAST_WORD_REGEX.test(labelSentence)) {
+    labelSentence += "...";
+  }
+
+  return labelSentence;
 }
 
 function getRandoIntInRange(min, max) {
