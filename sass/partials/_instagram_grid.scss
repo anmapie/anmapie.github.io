@@ -112,9 +112,17 @@ $photoSize: 240;
   }
 
   img {
-    max-width: #{$photoSize}px;
-    height: auto;
     opacity: 0;
+
+    &.landscape {
+      width: auto;
+      max-height: #{$photoSize}px;
+    }
+
+    &.portrait {
+      max-width: #{$photoSize}px;
+      height: auto;
+    }
   }
 
   // ew, right? but since margin is set inline for the

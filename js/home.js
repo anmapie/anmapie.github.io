@@ -47,6 +47,12 @@ function setUpInstagramGrid() {
 
       instaPolaroids.forEach((instaPolaroid, index) => {
         var post = posts[index];
+        var orientation = 'portait';
+
+        getImageOrientation(post["image"], function (derivedOrientation) {
+          instaPolaroid.children(".photo").children("img").addClass(derivedOrientation)
+        })
+
         instaPolaroid.removeClass("loading");
         instaPolaroid.attr("href", post["url"]);
         instaPolaroid.children(".photo").html(`<img src="${post["image"]}"></img>`);
@@ -107,6 +113,21 @@ function buildInstaPolaroid() {
   instaPolaroid.css(getPolaroidCss());
 
   return instaPolaroid;
+}
+
+function getImageOrientation(imgUrl, callbackFunc) {
+  var imgObj = new Image();
+
+  imgObj.onload = function() {
+    if (imgObj.naturalWidth > imgObj.naturalHeight) {
+      console.log(imgObj.src)
+      console.log("LANDSCAPE")
+    }
+    var orientation = imgObj.naturalWidth > imgObj.naturalHeight ? 'landscape' : 'portrait';
+    callbackFunc(orientation);
+  };
+
+  imgObj.src = imgUrl;
 }
 
 // assign a random top margin (within a range) to give the photos
